@@ -1,15 +1,19 @@
 #!/bin/bash
 
-if [[ -e authorized_keys ]]; then
+AUTH_FILE=~/.ssh/authorized_keys
+
+if [[ -e ${AUTH_FILE} ]]; then
     echo Removing existing authorized keys file
-    rm -rf authorized_keys
+    rm -rf ${AUTH_FILE}
 fi
 
 if [[ -d ./public_keys/ ]]; then
     for k in `ls ./public_keys/*.pub`; do
         echo Adding ${k}
-        cat ${k} >> authorized_keys
+        cat ${k} >> ${AUTH_FILE}
     done
+
+    chmod 600 ${AUTH_FILE}
 fi
 
 
