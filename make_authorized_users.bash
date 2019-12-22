@@ -15,7 +15,7 @@ if [[ -d ./public_keys/ ]]; then
     done
 
     echo "Removing empty lines"
-    sed '/^$/d' ${AUTH_FILE}
+    sed -i '/^$/d' ${AUTH_FILE}
 
     echo "Chmod 600"
     chmod 600 ${AUTH_FILE}
