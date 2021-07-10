@@ -1,0 +1,29 @@
+name: Build ssh authorized_keys file
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'public_keys/**'
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  create-authorized-keys:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      
+      - name: Run script
+        run: bash ./make_authorized_users.bash
+        env:
+          ENV_AUTH_FILE: ./authorized_keys
+
+      - name: Show Authorized Keys
+        run: cat ./authorized_keys
+        

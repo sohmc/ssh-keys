@@ -2,6 +2,11 @@
 
 AUTH_FILE=~/.ssh/authorized_keys
 
+if [[ -z ${ENV_AUTH_FILE+x} ]]; then
+    AUTH_FILE=${ENV_AUTH_FILE}
+    echo "AUTH_FILE set to ${AUTH_FILE}"
+fi
+
 if [[ -e ${AUTH_FILE} ]]; then
     echo Removing existing authorized keys file
     rm -rf ${AUTH_FILE}
