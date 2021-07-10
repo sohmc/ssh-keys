@@ -26,4 +26,11 @@ jobs:
 
       - name: Show Authorized Keys
         run: cat ./authorized_keys
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./authorized_keys
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
