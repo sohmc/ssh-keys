@@ -2,10 +2,13 @@
 
 AUTH_FILE=~/.ssh/authorized_keys
 
-if [[ -z ${ENV_AUTH_FILE+x} ]]; then
+if [[ !-z ${ENV_AUTH_FILE+x} ]]; then
+    echo "Environment variable ENV_AUTH_FILE set."
     AUTH_FILE=${ENV_AUTH_FILE}
-    echo "AUTH_FILE set to ${AUTH_FILE}"
 fi
+
+echo "Copying keys to ${AUTH_FILE}"
+
 
 if [[ -e ${AUTH_FILE} ]]; then
     echo Removing existing authorized keys file
@@ -25,5 +28,3 @@ if [[ -d ./public_keys/ ]]; then
     echo "Chmod 600"
     chmod 600 ${AUTH_FILE}
 fi
-
-
