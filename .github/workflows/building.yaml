@@ -33,8 +33,9 @@ jobs:
 
       - name: Remove latest tag if exists
         uses: actions/github-script@v5
+        if: github.ref != 'refs/tags/latest'
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{secrets.TOKEN_FOR_ACTIONS}}
           script: |
             try {
                 await github.rest.git.deleteRef({
@@ -48,8 +49,9 @@ jobs:
       
       - name: Add latest tag
         uses: actions/github-script@v5
+        if: github.ref != 'refs/tags/latest'
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{secrets.TOKEN_FOR_ACTIONS}}
           script: |
             await github.rest.git.createRef({
               owner: context.repo.owner,
