@@ -31,30 +31,30 @@ jobs:
       - name: Show Authorized Keys
         run: cat ./authorized_keys
 
-      - name: Remove nightly tag if exists
+      - name: Remove latest tag if exists
         uses: actions/github-script@v5
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             try {
-                await github.git.deleteRef({
+                await github.rest.git.deleteRef({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  ref: "tags/nightly"
+                  ref: "tags/latest"
                 })
             } catch (e) {
-              console.log("The nightly tag doesn't exist yet: " + e)
+              console.log("The latest tag doesn't exist yet: " + e)
             }
       
-      - name: Add nightly tag
+      - name: Add latest tag
         uses: actions/github-script@v5
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            await github.git.createRef({
+            await github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: "refs/tags/nightly",
+              ref: "refs/tags/latest",
               sha: context.sha
             })
 
