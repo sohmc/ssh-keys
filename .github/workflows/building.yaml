@@ -8,6 +8,8 @@ on:
       - 'public_keys/*'
       - '.github/workflows/*'
       - 'make_authorized_users.bash'
+    tags:
+        - 'latest'
 
 defaults:
   run:
@@ -29,8 +31,36 @@ jobs:
       - name: Show Authorized Keys
         run: cat ./authorized_keys
 
+      - name: Remove nightly tag if exists
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            try {
+                await github.git.deleteRef({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ref: "tags/nightly"
+                })
+            } catch (e) {
+              console.log("The nightly tag doesn't exist yet: " + e)
+            }
+      
+      - name: Add nightly tag
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            await github.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/nightly",
+              sha: context.sha
+            })
+
       - name: Release
         uses: softprops/action-gh-release@v1
+        if: github.ref == 'refs/tags/latest'
         with:
           files: ./authorized_keys
         env:
