@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'public_keys/*'
+      - 'ssh-public_keys/*'
       - '.github/workflows/*'
       - 'make_authorized_users.bash'
       - 'garbage.txt'
